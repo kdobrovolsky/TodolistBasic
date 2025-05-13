@@ -34,12 +34,26 @@ export const TodoListItem = ({
     setTaskTitle(event.currentTarget.value);
   };
 
+  const createTaskOnEnterHandler = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    //функция для отправки таски по нажатию Enter
+    if (event.key === "Enter") {
+      createTaskTitle(taskTitle);
+      setTaskTitle("");
+    }
+  };
+
   return (
     <>
       <div>
         <h3>{title}</h3>
         <div>
-          <input value={taskTitle} onChange={onChangeHandler} />
+          <input
+            value={taskTitle}
+            onChange={onChangeHandler}
+            onKeyDown={createTaskOnEnterHandler}
+          />
           <Button title={"+"} onClick={onClickHandler} />
         </div>
         {tasks.length === 0 ? (
