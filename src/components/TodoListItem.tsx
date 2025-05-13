@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { ChangeEvent, useState } from "react";
 import { FilterValues } from "../App";
 import { Button } from "./Button";
 
@@ -13,7 +13,7 @@ type TodoListPropsType = {
   tasks: Task[];
   deleteTasks: (taskId: string) => void;
   changeFilter: (filter: FilterValues) => void;
-  createTasks: (title:string) => void;
+  createTaskTitle: (title: string) => void;
 };
 
 export const TodoListItem = ({
@@ -21,22 +21,26 @@ export const TodoListItem = ({
   tasks,
   deleteTasks,
   changeFilter,
-  createTasks,
+  createTaskTitle,
 }: TodoListPropsType) => {
+  const [taskTitle, setTaskTitle] = useState("");
 
-    const inputRef = useRef<HTMLInputElement>(null)
+  const onClickHandler = () => {
+    createTaskTitle(taskTitle);
+    setTaskTitle("");
+  };
+
+  const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    setTaskTitle(event.currentTarget.value);
+  };
 
   return (
     <>
       <div>
         <h3>{title}</h3>
         <div>
-          <input ref={inputRef}/>
-          <Button title={"+"} onClick={() => {
-            if(inputRef.current){
-                createTasks(inputRef.current.value)
-            }
-          }} />
+          <input value={taskTitle} onChange={onChangeHandler} />
+          <Button title={"+"} onClick={onClickHandler} />
         </div>
         {tasks.length === 0 ? (
           <p>No tasks</p>

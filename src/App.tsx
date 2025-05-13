@@ -35,7 +35,7 @@ function App() {
   };
 
   //create tasks
-  const createTasks = (title:string) => {
+  const createTaskTitle = (title: string) => {
     const newTask = { id: v1(), title: title, isDone: true };
     const newTasks = [newTask, ...tasks];
     setTasks(newTasks);
@@ -48,7 +48,7 @@ function App() {
         tasks={tasks}
         deleteTasks={deleteTasks}
         changeFilter={changeFilter}
-        createTasks={createTasks}
+        createTaskTitle={createTaskTitle}
       />
     </div>
   );
