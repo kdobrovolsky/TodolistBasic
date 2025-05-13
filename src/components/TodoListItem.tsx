@@ -2,7 +2,7 @@ import { FilterValues } from "../App";
 import { Button } from "./Button";
 
 export type Task = {
-  id: number;
+  id: string;
   title: string;
   isDone: boolean;
 };
@@ -10,7 +10,7 @@ export type Task = {
 type TodoListPropsType = {
   title: string;
   tasks: Task[];
-  deleteTasks: (taskId: number) => void;
+  deleteTasks: (taskId: string) => void;
   changeFilter: (filter: FilterValues) => void;
 };
 
