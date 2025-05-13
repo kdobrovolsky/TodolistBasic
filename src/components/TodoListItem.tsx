@@ -9,34 +9,42 @@ export type Task = {
 type TodoListPropsType = {
   title: string;
   tasks: Task[];
+  deleteTasks: (taskId: number) => void;
 };
 
-export const TodoListItem = ({ title, tasks }: TodoListPropsType) => {
-return( <>
-    <div>
-      <h3>{title}</h3>
+export const TodoListItem = ({
+  title,
+  tasks,
+  deleteTasks,
+}: TodoListPropsType) => {
+  return (
+    <>
       <div>
-        <input />
-        <Button title={"+"}/>
+        <h3>{title}</h3>
+        <div>
+          <input />
+          <Button title={"+"} />
+        </div>
+        {tasks.length === 0 ? (
+          <p>No tasks</p>
+        ) : (
+          <ul>
+            {tasks.map((task) => (
+              <li key={task.id}>
+                <input type="checkbox" checked={task.isDone} />{" "}
+                <span>{task.title}</span>
+                <Button title={"X"} onClick={() => deleteTasks(task.id)} />
+              </li>
+            ))}
+          </ul>
+        )}
+
+        <div>
+          <Button title={"All"} />
+          <Button title={"Active"} />
+          <Button title={"Completed"} />
+        </div>
       </div>
-      {tasks.length === 0?(
-        <p>No tasks</p>
-        ):(
-        <ul>
-        {tasks.map((task) => (
-          <li key={task.id}>
-            <input type="checkbox" checked={task.isDone} /> <span>{task.title}</span>
-          </li>
-        ))}
-      </ul>
-    )}
-     
-      <div>
-      <Button title={"All"}/>
-      <Button title={"Active"}/>
-      <Button title={"Completed"}/>
-      </div>
-    </div>
-  </>
-  )
+    </>
+  );
 };
