@@ -2,6 +2,7 @@ import { ChangeEvent, useState } from "react";
 import { FilterValues } from "../App";
 import { Button } from "./Button";
 
+
 export type Task = {
   id: string;
   title: string;
@@ -60,22 +61,25 @@ export const TodoListItem = ({
           <p>No tasks</p>
         ) : (
           <ul>
-            {tasks.map((task) => (
-              <li key={task.id}>
-                <input type="checkbox" checked={task.isDone} />{" "}
-                <span>{task.title}</span>
-                <Button title={"X"} onClick={() => deleteTasks(task.id)} />
-              </li>
-            ))}
+            {tasks.map((task) => {
+              const deleteTaskHandler = () => {
+                deleteTasks(task.id); 
+              };
+              return (
+                <li key={task.id}>
+                  <input type="checkbox" checked={task.isDone} />{" "}
+                  <span>{task.title}</span>
+                  <Button title={"X"} onClick={deleteTaskHandler} />
+                </li>
+              );
+            })}
           </ul>
         )}
 
         <div>
           <Button title={"All"} onClick={() => changeFilter("all")} />
           <Button title={"Active"} onClick={() => changeFilter("active")} />
-          <Button
-            title={"Completed"}
-            onClick={() => changeFilter("completed")}
+          <Button title={"Completed"} onClick={() => changeFilter("completed")}
           />
         </div>
       </div>
