@@ -12,6 +12,7 @@ type TodoListPropsType = {
   tasks: Task[];
   deleteTasks: (taskId: string) => void;
   changeFilter: (filter: FilterValues) => void;
+  createTasks: () => void;
 };
 
 export const TodoListItem = ({
@@ -19,6 +20,7 @@ export const TodoListItem = ({
   tasks,
   deleteTasks,
   changeFilter,
+  createTasks,
 }: TodoListPropsType) => {
   return (
     <>
@@ -26,7 +28,7 @@ export const TodoListItem = ({
         <h3>{title}</h3>
         <div>
           <input />
-          <Button title={"+"} />
+          <Button title={"+"} onClick={createTasks} />
         </div>
         {tasks.length === 0 ? (
           <p>No tasks</p>

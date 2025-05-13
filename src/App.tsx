@@ -34,6 +34,12 @@ function App() {
     setFilter(filter);
   };
 
+  //create tasks
+  const createTasks = () => {
+    const newTask = { id: v1(), title: "JS", isDone: true };
+    const newTasks = [newTask, ...tasks];
+    setTasks(newTasks);
+  };
 
   return (
     <div className="app">
@@ -42,6 +48,7 @@ function App() {
         tasks={tasks}
         deleteTasks={deleteTasks}
         changeFilter={changeFilter}
+        createTasks={createTasks}
       />
     </div>
   );
