@@ -35,8 +35,8 @@ function App() {
   };
 
   //create tasks
-  const createTasks = () => {
-    const newTask = { id: v1(), title: "JS", isDone: true };
+  const createTasks = (title:string) => {
+    const newTask = { id: v1(), title: title, isDone: true };
     const newTasks = [newTask, ...tasks];
     setTasks(newTasks);
   };
