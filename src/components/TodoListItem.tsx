@@ -2,7 +2,6 @@ import { ChangeEvent, useState } from "react";
 import { FilterValues } from "../App";
 import { Button } from "./Button";
 
-
 export type Task = {
   id: string;
   title: string;
@@ -15,8 +14,8 @@ type TodoListPropsType = {
   deleteTasks: (taskId: string) => void;
   changeFilter: (filter: FilterValues) => void;
   createTaskTitle: (title: string) => void;
-  changeStatus: (taskId: string, isDone: boolean) => void;
-}
+  changeStatus: (taskId: string, isDone: boolean) => void
+};
 
 export const TodoListItem = ({
   title,
@@ -29,6 +28,10 @@ export const TodoListItem = ({
   const [taskTitle, setTaskTitle] = useState("");
 
   const onClickHandler = () => {
+    if(taskTitle.trim() === ''){
+      return
+    }
+
     createTaskTitle(taskTitle);
     setTaskTitle("");
   };
@@ -65,18 +68,21 @@ export const TodoListItem = ({
           <ul>
             {tasks.map((task) => {
               const deleteTaskHandler = () => {
-                deleteTasks(task.id); 
+                deleteTasks(task.id);
               };
 
-              const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-                // changeStatus(e.currentTarget.value)
-                console.log(e.currentTarget.checked)
-                changeStatus(task.id, e.currentTarget.checked);
+              const changeStatusHandler = (e:ChangeEvent<HTMLInputElement>) => {
+                changeStatus(task.id, e.currentTarget.checked)
               }
+             
 
               return (
                 <li key={task.id}>
-                  <input type="checkbox" checked={task.isDone}  onChange={onChangeHandler}/>
+                  <input
+                    type="checkbox"
+                    checked={task.isDone}
+                    onChange={changeStatusHandler}
+                  />
                   <span>{task.title}</span>
                   <Button title={"X"} onClick={deleteTaskHandler} />
                 </li>
@@ -88,7 +94,9 @@ export const TodoListItem = ({
         <div>
           <Button title={"All"} onClick={() => changeFilter("all")} />
           <Button title={"Active"} onClick={() => changeFilter("active")} />
-          <Button title={"Completed"} onClick={() => changeFilter("completed")}
+          <Button
+            title={"Completed"}
+            onClick={() => changeFilter("completed")}
           />
         </div>
       </div>

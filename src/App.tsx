@@ -41,14 +41,11 @@ function App() {
     setTasks(newTasks);
   };
 
-  const changeStatus = (taskId: string, isDone: boolean) => {
-    let task = tasks.find((t) => t.id === taskId);
-    if (task) {
-      task.isDone = isDone;
-    }
-    let copy =[...tasks]
-    setTasks(copy);
-  };
+  const changeStatus = (taskId: string, isDone: boolean) => {    
+    const task = tasks.map(t => t.id === taskId ? {...t, isDone}:t)
+    setTasks(task)
+  }
+
 
   return (
     <div className="app">
@@ -58,7 +55,7 @@ function App() {
         deleteTasks={deleteTasks}
         changeFilter={changeFilter}
         createTaskTitle={createTaskTitle}
-        changeStatus={changeStatus}
+        changeStatus= {changeStatus}
       />
     </div>
   );
