@@ -56,6 +56,7 @@ function App() {
         changeFilter={changeFilter}
         createTaskTitle={createTaskTitle}
         changeStatus= {changeStatus}
+        filter={filter}
       />
     </div>
   );
