@@ -23,13 +23,18 @@ function App() {
   };
 
   //filtered tasks
-  let filteredTasks = tasks;
-  if (filter === "active") {
-    filteredTasks = tasks.filter((task) => !task.isDone);
-  }
-  if (filter === "completed") {
-    filteredTasks = tasks.filter((task) => task.isDone);
-  }
+   // функция фильтрации таски
+  const getFilteredTasks = (tasks: Task[], filter: FilterValues) => {
+   
+    switch (filter) {
+      case "active":
+        return tasks.filter((task) => !task.isDone);
+      case "completed":
+        return tasks.filter((task) => task.isDone);
+    }
+    return tasks;
+  };
+  const tasksForTodoList = getFilteredTasks(tasks, filter); // функция помещенa в переменную
   const changeFilter = (filter: FilterValues) => {
     setFilter(filter);
   };
@@ -41,23 +46,24 @@ function App() {
     setTasks(newTasks);
   };
 
-  const changeStatus = (taskId: string, isDone: boolean) => {    
-    const task = tasks.map(t => t.id === taskId ? {...t, isDone}:t)
-    setTasks(task)
-  }
-
+  const changeStatus = (taskId: string, isDone: boolean) => {
+    const task = tasks.map((t) => (t.id === taskId ? { ...t, isDone } : t));
+    setTasks(task);
+  };
 
   return (
+    <div className="container">
     <div className="app">
       <TodoListItem
         title={"TodoList"}
-        tasks={filteredTasks}
+        tasks={tasksForTodoList}
         deleteTasks={deleteTasks}
         changeFilter={changeFilter}
         createTaskTitle={createTaskTitle}
-        changeStatus= {changeStatus}
+        changeStatus={changeStatus}
         filter={filter}
       />
+    </div>
     </div>
   );
 }

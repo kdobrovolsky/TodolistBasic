@@ -1,6 +1,17 @@
+
+.container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  
+}
+
 .app {
   padding: 30px;
   display: flex;
+  background-color: rgb(58, 146, 146);
+  border-radius: 20px;
 }
 
 .app > div {
@@ -16,4 +27,8 @@
 
 .active-filter {
   background-color: aquamarine;
+}
+
+.is-done {
+  opacity: 0.5;
 }
