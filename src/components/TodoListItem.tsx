@@ -14,8 +14,9 @@ type TodoListPropsType = {
   deleteTasks: (taskId: string) => void;
   changeFilter: (filter: FilterValues) => void;
   createTaskTitle: (title: string) => void;
-  changeStatus: (taskId: string, isDone: boolean) => void
-  filter: FilterValues
+  changeStatus: (taskId: string, isDone: boolean) => void;
+  filter: FilterValues;
+  deleteAllTasks: () => void
 };
 
 export const TodoListItem = ({
@@ -26,6 +27,7 @@ export const TodoListItem = ({
   createTaskTitle,
   changeStatus,
   filter,
+  deleteAllTasks
 }: TodoListPropsType) => {
 
   const [taskTitle, setTaskTitle] = useState("");
@@ -104,13 +106,14 @@ export const TodoListItem = ({
             })}
           </ul>
         )}
-
+        <Button title={"Delete all tasks"} onClick={deleteAllTasks}/>
         <div>
           <Button className={filter === 'all' ? 'active-filter': ""} title={"All"} onClick={() => changeFilter("all")} />
           <Button className={filter === 'active' ? 'active-filter': ""} title={"Active"} onClick={() => changeFilter("active")} />
           <Button className={filter === 'completed' ? 'active-filter': ""} title={"Completed"}onClick={() => changeFilter("completed")}
           />
         </div>
+        
       </div>
     </>
   );

@@ -21,6 +21,11 @@ function App() {
     });
     setTasks(tasks);
   };
+  //delete all tasks
+  const deleteAllTasks = () => {
+   const deleteTasks = tasks.filter(() => false)
+   setTasks(deleteTasks)
+  }
 
   //filtered tasks
    // функция фильтрации таски
@@ -62,6 +67,7 @@ function App() {
         createTaskTitle={createTaskTitle}
         changeStatus={changeStatus}
         filter={filter}
+        deleteAllTasks={deleteAllTasks}
       />
     </div>
     </div>
