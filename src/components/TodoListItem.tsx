@@ -11,13 +11,13 @@ export type Task = {
 type TodoListPropsType = {
   title: string;
   tasks: Task[];
-  id: string
-  deleteTasks: (todolistId:string,taskId: string) => void;
-  changeFilter: (todolistId:string,filter: FilterValues) => void;
-  createTaskTitle: (todolistId:string,title: string) => void;
-  changeStatus: (todolistId:string,taskId: string, isDone: boolean) => void;
+  id: string;
+  deleteTasks: (todolistId: string, taskId: string) => void;
+  changeFilter: (todolistId: string, filter: FilterValues) => void;
+  createTaskTitle: (todolistId: string, title: string) => void;
+  changeStatus: (todolistId: string, taskId: string, isDone: boolean) => void;
   filter: FilterValues;
-  deleteTodolist: (todolistId:string) => void
+  deleteTodolist: (todolistId: string) => void;
   // deleteAllTasks: () => void
 };
 
@@ -30,22 +30,21 @@ export const TodoListItem = ({
   createTaskTitle,
   changeStatus,
   filter,
-  deleteTodolist
-  // deleteAllTasks
-}: TodoListPropsType) => {
-
+  deleteTodolist,
+}: // deleteAllTasks
+TodoListPropsType) => {
   const [taskTitle, setTaskTitle] = useState("");
-  const [error, setError] = useState<string|null>(null)
+  const [error, setError] = useState<string | null>(null);
 
   const onClickHandler = () => {
-    if(taskTitle.trim() !== ''){
-      createTaskTitle(id,title.trim())
-      setTaskTitle('')
-    }else{
-      setError("Title is requared")
-      return
+    if (taskTitle.trim() !== "") {
+      createTaskTitle(id, title.trim());
+      setTaskTitle("");
+    } else {
+      setError("Title is requared");
+      return;
     }
-    createTaskTitle(id,taskTitle);
+    createTaskTitle(id, taskTitle);
     setTaskTitle("");
   };
 
@@ -56,35 +55,39 @@ export const TodoListItem = ({
   const createTaskOnEnterHandler = (
     event: React.KeyboardEvent<HTMLInputElement>
   ) => {
-    //функция для отправки таски по нажатию Enter
-    setError(null)
+    setError(null);
     if (event.key === "Enter") {
-      createTaskTitle(id,taskTitle);
+      const trimmedTitle = taskTitle.trim();
+
+      if (!trimmedTitle) {
+        setError("Title is required");
+        return;
+      }
+      setError(null);
+      createTaskTitle(id, trimmedTitle);
       setTaskTitle("");
     }
   };
 
   const deleteTodolistHandler = () => {
-    deleteTodolist(id)
-  }
+    deleteTodolist(id);
+  };
 
-  
   return (
     <>
       <div>
-        <h3>{title} <Button title={"X"} onClick={deleteTodolistHandler}/></h3>
+        <h3>
+          {title} <Button title={"X"} onClick={deleteTodolistHandler} />
+        </h3>
         <div>
           <input
             value={taskTitle}
             onChange={onChangeHandler}
             onKeyDown={createTaskOnEnterHandler}
-            className={error?"error": ''}
+            className={error ? "error" : ""}
           />
-          <Button 
-          title={"+"} 
-          onClick={onClickHandler} 
-          />
-          {error&&<div className="error-message">{error}</div>}
+          <Button title={"+"} onClick={onClickHandler} />
+          {error && <div className="error-message">{error}</div>}
         </div>
         {tasks.length === 0 ? (
           <p>No tasks</p>
@@ -92,16 +95,17 @@ export const TodoListItem = ({
           <ul>
             {tasks.map((task) => {
               const deleteTaskHandler = () => {
-                deleteTasks(id,task.id);
+                deleteTasks(id, task.id);
               };
 
-              const changeStatusHandler = (e:ChangeEvent<HTMLInputElement>) => {
-                changeStatus(id,task.id, e.currentTarget.checked)
-              }
-             
+              const changeStatusHandler = (
+                e: ChangeEvent<HTMLInputElement>
+              ) => {
+                changeStatus(id, task.id, e.currentTarget.checked);
+              };
 
               return (
-                <li key={task.id} className={task.isDone ? "is-done": ''}>
+                <li key={task.id} className={task.isDone ? "is-done" : ""}>
                   <input
                     type="checkbox"
                     checked={task.isDone}
@@ -116,12 +120,22 @@ export const TodoListItem = ({
         )}
         {/* <Button title={"Delete all tasks"} onClick={deleteAllTasks}/> */}
         <div>
-          <Button className={filter === 'all' ? 'active-filter': ""} title={"All"} onClick={() => changeFilter(id,"all")} />
-          <Button className={filter === 'active' ? 'active-filter': ""} title={"Active"} onClick={() => changeFilter(id,"active")} />
-          <Button className={filter === 'completed' ? 'active-filter': ""} title={"Completed"}onClick={() => changeFilter(id,"completed")}
+          <Button
+            className={filter === "all" ? "active-filter" : ""}
+            title={"All"}
+            onClick={() => changeFilter(id, "all")}
+          />
+          <Button
+            className={filter === "active" ? "active-filter" : ""}
+            title={"Active"}
+            onClick={() => changeFilter(id, "active")}
+          />
+          <Button
+            className={filter === "completed" ? "active-filter" : ""}
+            title={"Completed"}
+            onClick={() => changeFilter(id, "completed")}
           />
         </div>
-        
       </div>
     </>
   );
