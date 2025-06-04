@@ -53,13 +53,17 @@ function App() {
     setTasks({...tasks});
   };
 
+  const deleteTodolist = (todolistId: string) => {
+    setTodolists(todolists.filter(tl=> tl.id !== todolistId))
+  }
+
 
   const todolistId1 = v1()
   const todolistId2 = v1()
 
   const [todolists, setTodolists] = useState<Todolist[]>([
-    { id: v1(), title: "What to learn", filter: "all", },
-    { id: v1(), title: "What to learn", filter: "active" },
+    { id: todolistId1, title: "What to learn", filter: "all", },
+    { id: todolistId2, title: "What to learn", filter: "active" },
   ]);
 
   const [tasks, setTasks] = useState({
@@ -92,9 +96,8 @@ function App() {
         //функция помещенная в переменную
         const tasksForTodoList = getFilteredTasks(tasks[tl.id], tl.filter);
         return (
-          <div className="app">
+          <div className="app" key={tl.id}>
             <TodoListItem
-              key={tl.id}
               id = {tl.id}
               title={tl.title}
               tasks={tasksForTodoList}
@@ -103,7 +106,7 @@ function App() {
               createTaskTitle={createTaskTitle}
               changeStatus={changeStatus}
               filter={tl.filter}
-              // deleteAllTasks={deleteAllTasks}
+              deleteTodolist={deleteTodolist}
             />
           </div>
         );
