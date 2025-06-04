@@ -11,23 +11,25 @@ export type Task = {
 type TodoListPropsType = {
   title: string;
   tasks: Task[];
-  deleteTasks: (taskId: string) => void;
-  changeFilter: (filter: FilterValues) => void;
-  createTaskTitle: (title: string) => void;
-  changeStatus: (taskId: string, isDone: boolean) => void;
+  id: string
+  deleteTasks: (todolistId:string,taskId: string) => void;
+  changeFilter: (todolistId:string,filter: FilterValues) => void;
+  createTaskTitle: (todolistId:string,title: string) => void;
+  changeStatus: (todolistId:string,taskId: string, isDone: boolean) => void;
   filter: FilterValues;
-  deleteAllTasks: () => void
+  // deleteAllTasks: () => void
 };
 
 export const TodoListItem = ({
   title,
   tasks,
+  id,
   deleteTasks,
   changeFilter,
   createTaskTitle,
   changeStatus,
   filter,
-  deleteAllTasks
+  // deleteAllTasks
 }: TodoListPropsType) => {
 
   const [taskTitle, setTaskTitle] = useState("");
@@ -35,13 +37,13 @@ export const TodoListItem = ({
 
   const onClickHandler = () => {
     if(taskTitle.trim() !== ''){
-      createTaskTitle(title.trim())
+      createTaskTitle(id,title.trim())
       setTaskTitle('')
     }else{
       setError("Title is requared")
       return
     }
-    createTaskTitle(taskTitle);
+    createTaskTitle(id,taskTitle);
     setTaskTitle("");
   };
 
@@ -55,7 +57,7 @@ export const TodoListItem = ({
     //функция для отправки таски по нажатию Enter
     setError(null)
     if (event.key === "Enter") {
-      createTaskTitle(taskTitle);
+      createTaskTitle(id,taskTitle);
       setTaskTitle("");
     }
   };
@@ -84,11 +86,11 @@ export const TodoListItem = ({
           <ul>
             {tasks.map((task) => {
               const deleteTaskHandler = () => {
-                deleteTasks(task.id);
+                deleteTasks(id,task.id);
               };
 
               const changeStatusHandler = (e:ChangeEvent<HTMLInputElement>) => {
-                changeStatus(task.id, e.currentTarget.checked)
+                changeStatus(id,task.id, e.currentTarget.checked)
               }
              
 
@@ -106,11 +108,11 @@ export const TodoListItem = ({
             })}
           </ul>
         )}
-        <Button title={"Delete all tasks"} onClick={deleteAllTasks}/>
+        {/* <Button title={"Delete all tasks"} onClick={deleteAllTasks}/> */}
         <div>
-          <Button className={filter === 'all' ? 'active-filter': ""} title={"All"} onClick={() => changeFilter("all")} />
-          <Button className={filter === 'active' ? 'active-filter': ""} title={"Active"} onClick={() => changeFilter("active")} />
-          <Button className={filter === 'completed' ? 'active-filter': ""} title={"Completed"}onClick={() => changeFilter("completed")}
+          <Button className={filter === 'all' ? 'active-filter': ""} title={"All"} onClick={() => changeFilter(id,"all")} />
+          <Button className={filter === 'active' ? 'active-filter': ""} title={"Active"} onClick={() => changeFilter(id,"active")} />
+          <Button className={filter === 'completed' ? 'active-filter': ""} title={"Completed"}onClick={() => changeFilter(id,"completed")}
           />
         </div>
         
