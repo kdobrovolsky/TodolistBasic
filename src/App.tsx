@@ -2,13 +2,14 @@ import { useState } from "react";
 import "./App.css";
 import { Task, TodoListItem } from "./components/TodoListItem";
 import { v1 } from "uuid";
+import { CreateItemForm } from "./components/CreateItemForm";
 
 export type FilterValues = "all" | "active" | "completed";
 export type TasksState = {
   [key: string]: Task[];
 };
 
-export type Todolist = {
+export type TodolistType = {
   id: string;
   title: string;
   filter: FilterValues;
@@ -64,7 +65,7 @@ function App() {
   const todolistId1 = v1();
   const todolistId2 = v1();
 
-  const [todolists, setTodolists] = useState<Todolist[]>([
+  const [todolists, setTodolists] = useState<TodolistType[]>([
     { id: todolistId1, title: "What to learn", filter: "all" },
     { id: todolistId2, title: "What to learn", filter: "all" },
   ]);
@@ -81,8 +82,31 @@ function App() {
     ],
   });
 
+  const changeTaskTitleEditableSpan = (todolistId: string,taskId: string,newTitle: string) => {
+    const todolistTasks = tasks[todolistId];
+    const newTodolistTasks = todolistTasks.map((t) =>
+      t.id === taskId ? { ...t, title:newTitle } : t
+    );
+    tasks[todolistId] = newTodolistTasks;
+    setTasks({ ...tasks });
+  };
+
+  const changeTodolistTitleEditableSpan = (taskId: string,newTitle: string) => {   
+    setTodolists(todolists.map((t) =>t.id === taskId ? { ...t, title:newTitle } : t))
+  };
+
+  const onChangeNewTodolist = (title: string) => {
+    const todolistId = v1()
+    const newTodolist:TodolistType = { id: todolistId, title, filter: 'all' };
+    setTodolists([newTodolist, ...todolists])
+    setTasks({...tasks, [todolistId]:[]})
+  }
+
+
+
   return (
     <div className="container">
+       <CreateItemForm addItem={onChangeNewTodolist}/>
       {todolists.map((tl) => {
         // функция фильтрации таски
         const getFilteredTasks = (tasks: Task[], filter: FilterValues) => {
@@ -108,6 +132,8 @@ function App() {
               changeStatus={changeStatus}
               filter={tl.filter}
               deleteTodolist={deleteTodolist}
+              changeTaskTitleEditableSpan = {changeTaskTitleEditableSpan}
+              changeTodolistTitleEditableSpan = {changeTodolistTitleEditableSpan}
             />
           </div>
         );

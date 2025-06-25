@@ -8,10 +8,8 @@
 }
 
 .app {
-  padding: 30px;
   display: flex;
-  background-color: rgb(58, 146, 146);
-  border-radius: 20px;
+
 }
 
 .app > div {
