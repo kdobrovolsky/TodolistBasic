@@ -51,7 +51,7 @@ export const TodoListItem = ({
     deleteTodolist(id);
   };
 
-  const onChangeNewTitile = (newTitle: string) => {
+  const handleNewTask = (newTitle: string) => {
     createTaskTitle(id, newTitle);
   };
 
@@ -71,7 +71,7 @@ export const TodoListItem = ({
             <Delete />
           </IconButton>
         </h3>
-        <CreateItemForm addItem={onChangeNewTitile} />
+        <CreateItemForm addItem={handleNewTask} />
 
         {tasks.length === 0 ? (
           <p>No tasks</p>

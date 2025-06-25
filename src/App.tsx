@@ -101,8 +101,8 @@ function App() {
     const newTodolistTasks = todolistTasks.map((t) =>
       t.id === taskId ? { ...t, title: newTitle } : t
     );
-    tasks[todolistId] = newTodolistTasks;
-    setTasks({ ...tasks });
+    const newTasks = {...tasks, [todolistId]:newTodolistTasks}
+    setTasks(newTasks);
   };
 
   const changeTodolistTitleEditableSpan = (
@@ -169,8 +169,7 @@ function App() {
             return (
              
               <div style={{margin:'0 30px 0 0'}}>
-                <TodoListItem
-                 key={tl.id}
+                <TodoListItem key={tl.id}
                   id={tl.id}
                   title={tl.title}
                   tasks={tasksForTodoList}
