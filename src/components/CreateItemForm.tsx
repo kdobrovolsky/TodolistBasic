@@ -1,5 +1,7 @@
 import { ChangeEvent, useState,KeyboardEvent } from "react";
 import { Button } from "./Button";
+import { Fab, TextField } from "@mui/material";
+import { Add, Send } from "@mui/icons-material";
 
     export type CreateItemForm = {
         addItem: (newTitle: string) => void
@@ -42,14 +44,20 @@ export const CreateItemForm = ({addItem}:CreateItemForm) => {
 
     return(
         <div>
-        <input
-          value={taskTitle}
-          onChange={onChangeHandler}
-          onKeyDown={createTaskOnEnterHandler}
-          className={error ? "error" : ""}
-        />
-        <Button title={"+"} onClick={onClickHandler} />
-        {error && <div className="error-message">{error}</div>}
+        <TextField
+        label="Type name"
+        color="primary"
+        focused
+        onChange={onChangeHandler}
+        onKeyDown={createTaskOnEnterHandler}
+        value={taskTitle}
+        error={!!error}
+        helperText={error?"Title is required":''}
+      />
+        <Fab color="primary" aria-label="add"  onClick={onClickHandler} sx={{width: '45px', height:'45px', margin: '5px 0px 0px 5px'}} >
+      <Add />
+      </Fab>
+     
       </div>
     )
 }

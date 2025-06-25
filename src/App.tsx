@@ -3,6 +3,7 @@ import "./App.css";
 import { Task, TodoListItem } from "./components/TodoListItem";
 import { v1 } from "uuid";
 import { CreateItemForm } from "./components/CreateItemForm";
+import { AppBar, Button, Container, Grid, IconButton, Toolbar, Typography } from "@mui/material";
 
 export type FilterValues = "all" | "active" | "completed";
 export type TasksState = {
@@ -105,8 +106,35 @@ function App() {
 
 
   return (
-    <div className="container">
+    <div>
+       
+       <AppBar position="fixed" >
+        <Toolbar >
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+            
+          >
+          </IconButton>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            News
+          </Typography>
+          <Button color="inherit">Login</Button>
+        </Toolbar>
+      </AppBar>
+    
+    
+
+      <Container >
+      <Grid container spacing={2} sx={{margin:'100px 0px 0px  0px'}} >
+
        <CreateItemForm addItem={onChangeNewTodolist}/>
+       </Grid>
+
+       <Grid container spacing={1}>
       {todolists.map((tl) => {
         // функция фильтрации таски
         const getFilteredTasks = (tasks: Task[], filter: FilterValues) => {
@@ -136,8 +164,13 @@ function App() {
               changeTodolistTitleEditableSpan = {changeTodolistTitleEditableSpan}
             />
           </div>
+          
         );
-      })}
+        
+      })
+      }
+      </Grid>
+      </Container>
     </div>
   );
 }
