@@ -17,7 +17,7 @@ export type Todolist = {
 function App() {
   //delete tasks
   const deleteTasks = (todolistId: string, taskId: string) => {
-    //Берем таски тудулиста по его 'id'
+    //Берем таски тудулиста по его id
     const todolistTasks = tasks[todolistId];
     // Удаляем нужную таску:
     const newTodolist = todolistTasks.filter((task) => task.id !== taskId);
@@ -27,13 +27,6 @@ function App() {
     setTasks({ ...tasks });
   };
 
-  //delete all tasks
-  // const deleteAllTasks = (todolistId:string) => {
-  //   const todolistTasks = tasks[todolistId]
-  //   const deleteTasks = todolistTasks.filter(() => false);
-  //   tasks[todolistId] =deleteTasks
-  //   setTasks({...tasks});
-  // };
 
   const changeFilter = (todolistId: string, filter: FilterValues) => {
     setTodolists(

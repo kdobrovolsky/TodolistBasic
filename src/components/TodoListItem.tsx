@@ -1,6 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import { FilterValues } from "../App";
 import { Button } from "./Button";
+import { CreateItemForm } from "./CreateItemForm";
 
 export type Task = {
   id: string;
@@ -33,45 +34,15 @@ export const TodoListItem = ({
   deleteTodolist,
 }: // deleteAllTasks
 TodoListPropsType) => {
-  const [taskTitle, setTaskTitle] = useState("");
-  const [error, setError] = useState<string | null>(null);
 
-  const onClickHandler = () => {
-    if (taskTitle.trim() !== "") {
-      createTaskTitle(id, title.trim());
-      setTaskTitle("");
-    } else {
-      setError("Title is requared");
-      return;
-    }
-    createTaskTitle(id, taskTitle);
-    setTaskTitle("");
-  };
-
-  const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    setTaskTitle(event.currentTarget.value);
-  };
-
-  const createTaskOnEnterHandler = (
-    event: React.KeyboardEvent<HTMLInputElement>
-  ) => {
-    setError(null);
-    if (event.key === "Enter") {
-      const trimmedTitle = taskTitle.trim();
-
-      if (!trimmedTitle) {
-        setError("Title is required");
-        return;
-      }
-      setError(null);
-      createTaskTitle(id, trimmedTitle);
-      setTaskTitle("");
-    }
-  };
 
   const deleteTodolistHandler = () => {
     deleteTodolist(id);
   };
+
+  const onChangeNewTitile = (newTitle: string) => {
+    createTaskTitle(id, newTitle)
+  }
 
   return (
     <>
@@ -79,16 +50,8 @@ TodoListPropsType) => {
         <h3>
           {title} <Button title={"X"} onClick={deleteTodolistHandler} />
         </h3>
-        <div>
-          <input
-            value={taskTitle}
-            onChange={onChangeHandler}
-            onKeyDown={createTaskOnEnterHandler}
-            className={error ? "error" : ""}
-          />
-          <Button title={"+"} onClick={onClickHandler} />
-          {error && <div className="error-message">{error}</div>}
-        </div>
+        <CreateItemForm addItem={onChangeNewTitile}/>
+
         {tasks.length === 0 ? (
           <p>No tasks</p>
         ) : (
@@ -118,7 +81,6 @@ TodoListPropsType) => {
             })}
           </ul>
         )}
-        {/* <Button title={"Delete all tasks"} onClick={deleteAllTasks}/> */}
         <div>
           <Button
             className={filter === "all" ? "active-filter" : ""}
