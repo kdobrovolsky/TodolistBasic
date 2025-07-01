@@ -5,11 +5,9 @@ import { v1 } from "uuid";
 import { CreateItemForm } from "./components/CreateItemForm";
 import {
   AppBar,
-  Button,
   Container,
   Grid,
   IconButton,
-  Paper,
   Toolbar,
   Typography,
 } from "@mui/material";
@@ -148,11 +146,8 @@ function App() {
         <Grid container spacing={2} sx={{ margin: "100px 0px 0px  0px" }}>
           
           <CreateItemForm addItem={onChangeNewTodolist} />
-        
         </Grid>
-
         <Grid container spacing={1} >
-        
           {todolists.map((tl) => {
             // функция фильтрации таски
             const getFilteredTasks = (tasks: Task[], filter: FilterValues) => {
@@ -167,9 +162,8 @@ function App() {
             //функция помещенная в переменную
             const tasksForTodoList = getFilteredTasks(tasks[tl.id], tl.filter);
             return (
-             
-              <div style={{margin:'0 30px 0 0'}}>
-                <TodoListItem key={tl.id}
+              <div style={{margin:'0 30px 0 0'}} key={tl.id}>
+                <TodoListItem 
                   id={tl.id}
                   title={tl.title}
                   tasks={tasksForTodoList}
