@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { NavButton } from "./components/styles/TodolistItem.styles";
 import { changeTodolistFilterAC, changeTodolistTitleAC, createTodolistAC, deleteTodolistAC, todolistsReducer } from "./model/todolists-reducer";
+import { changeTaskStatusAC, changeTaskTitleAC, createTaskAC, deleteTasksAC, tasksReducer } from "./model/tasks-reducer";
 
 export type FilterValues = "all" | "active" | "completed";
 export type TasksState = {
@@ -36,7 +37,7 @@ function App() {
     { id: todolistId2, title: "What to learn", filter: "all" },
   ]);
 
-  const [tasks, setTasks] = useState<TasksState>({
+  const [tasks, dispatchTasks] = useReducer(tasksReducer,{
     [todolistId1]: [
       { id: v1(), title: "HTML&CSS", isDone: true },
       { id: v1(), title: "JS", isDone: true },
@@ -48,49 +49,21 @@ function App() {
     ],
   });
 
-  //delete tasks
+
   const deleteTasks = (todolistId: string, taskId: string) => {
-    //Берем таски тудулиста по его id
-    const todolistTasks = tasks[todolistId];
-    // Удаляем нужную таску:
-    const newTodolist = todolistTasks.filter((task) => task.id !== taskId);
-    //Перезаписываем массив тасок нужного тудулиста на новый (отфильтрованный):
-    tasks[todolistId] = newTodolist;
-    //Устанавливаем в state копию объекта, чтобы React отреагировал перерисовкой:
-    setTasks({ ...tasks });
+    dispatchTasks(deleteTasksAC({todolistId,taskId}))
   };
 
-  //create tasks
   const createTaskTitle = (todolistId: string, title: string) => {
-    const newTask = { id: v1(), title, isDone: false };
-    const todolistTasks = tasks[todolistId];
-    tasks[todolistId] = [newTask, ...todolistTasks];
-    setTasks({ ...tasks });
+    dispatchTasks(createTaskAC({todolistId,title}))
   };
 
-  const changeStatus = (
-    todolistId: string,
-    taskId: string,
-    isDone: boolean
-  ) => {
-    const todolistTasks = tasks[todolistId];
-    const newTodolistTasks = todolistTasks.map((t) =>
-      t.id === taskId ? { ...t, isDone } : t
-    );
-    tasks[todolistId] = newTodolistTasks;
-    setTasks({ ...tasks });
+  const changeStatus = (todolistId: string,taskId: string,isDone: boolean) => {
+    dispatchTasks(changeTaskStatusAC({todolistId,taskId,isDone}));
   };
-  const changeTaskTitleEditableSpan = (
-    todolistId: string,
-    taskId: string,
-    newTitle: string
-  ) => {
-    const todolistTasks = tasks[todolistId];
-    const newTodolistTasks = todolistTasks.map((t) =>
-      t.id === taskId ? { ...t, title: newTitle } : t
-    );
-    const newTasks = {...tasks, [todolistId]:newTodolistTasks}
-    setTasks(newTasks);
+
+  const changeTaskTitleEditableSpan = (todolistId: string,taskId: string,title: string) => {
+    dispatchTasks(changeTaskTitleAC({todolistId,taskId,title}))
   };
 
   
@@ -100,7 +73,7 @@ function App() {
   const deleteTodolist = (todolistId: string) => {
     dispatchTodolists(deleteTodolistAC(todolistId))
     delete tasks[todolistId];
-    setTasks({ ...tasks });
+    dispatchTasks(deleteTodolistAC(todolistId))
   };
 
   const changeFilter = (todolistId: string, filter: FilterValues) => {
@@ -115,10 +88,10 @@ function App() {
     dispatchTodolists(changeTodolistTitleAC({id: taskId, title: newTitle}))
   };
 
-  const onChangeNewTodolist = (title: string) => {
-    const todolistId = v1();
-    dispatchTodolists(createTodolistAC(title))
-    setTasks({ ...tasks, [todolistId]: [] });
+  const createTodolist = (title: string) => {
+    const actionCreateTodo = createTodolistAC(title)
+    dispatchTodolists(actionCreateTodo)
+    dispatchTasks(actionCreateTodo)
   };
 
   return (
@@ -147,7 +120,7 @@ function App() {
       <Container>
         <Grid container spacing={2} sx={{ margin: "100px 0px 0px  0px" }}>
           
-          <CreateItemForm addItem={onChangeNewTodolist} />
+          <CreateItemForm addItem={createTodolist} />
         </Grid>
         <Grid container spacing={1} >
           {todolists.map((tl) => {
