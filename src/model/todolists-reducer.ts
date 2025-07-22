@@ -1,54 +1,32 @@
-import { v1 } from "uuid";
+
 import { FilterValues, TodolistType } from "../app/App";
+import { createAction, createReducer, nanoid } from "@reduxjs/toolkit";
 
-// typeOf - deleteTodolistAC — это значение (функция), а не тип. TypeScript требует явно указать, что вы хотите работать с типом функции, а не с самой функцией.
-export type DeleteTodolistActionType = ReturnType<typeof deleteTodolistAC> //ReturnType берет из полученного типа только возвращаемое значение.
-export type CreateTodolistActionType = ReturnType<typeof createTodolistAC>
-export type ChangeTodolistTitleActionType = ReturnType<typeof changeTodolistTitleAC>
-export type ChangeTodolistFilterActionType = ReturnType<typeof changeTodolistFilterAC>
 
-type ActionType =DeleteTodolistActionType | CreateTodolistActionType | ChangeTodolistTitleActionType | ChangeTodolistFilterActionType
+export const deleteTodolistAC = createAction<{id: string}>('todolists/deleteTodolist')
+export const createTodolistAC = createAction('todolists/createTodolist', (title: string) => {
+  return{payload: {title,id: nanoid()}}
+})
+export const changeTodolistTitleAC = createAction<{id: string, title: string}>('todolists/changeTodolistTitle')
+export const changeTodolistFilterAC = createAction<{id: string, filter: FilterValues}>('todolists/changeTodolistFilter')
 
 const initialState: TodolistType[] = [];
 
-export const todolistsReducer = (state: TodolistType[] = initialState, action:ActionType ): TodolistType[] => {
-   switch(action.type){
-    case 'delete_todolist':
-      return  state.filter((tl) => tl.id !== action.payload.id)
-    case 'create_todolist': {
-        const newTodolist: TodolistType = {id: action.payload.id, title: action.payload.title, filter: 'all'}
-        return [...state, newTodolist]
-    }
-     case 'change_todolist_title' :{
-       return state.map((t) => (t.id === action.payload.id ? { ...t, title: action.payload.title } : t))
-     } 
-     case 'change_todolist_filter' :{
-        return state.map((t) => (t.id === action.payload.id ? { ...t, filter: action.payload.filter } : t))
-      } 
+export const todolistsReducer = createReducer(initialState,builder => {
+  builder.addCase(deleteTodolistAC,(state,action) => {
+    const index = state.findIndex(todo => todo.id === action.payload.id)
+    if (index !== -1) state.splice(index, 1)
+  }).addCase(createTodolistAC,(state,action) =>{
+    state.push({id: action.payload.id, title: action.payload.title, filter: 'all'})
+  }).addCase(changeTodolistTitleAC,(state,action)=>{
+    const index = state.findIndex(todo => todo.id === action.payload.id)
+    if (index !== -1) state[index].title = action.payload.title
+  }).addCase(changeTodolistFilterAC,(state,action) => {
+    const index = state.findIndex(todo => todo.id === action.payload.id)
+    if (index !== -1) state[index].title = action.payload.filter
+  })
+})
 
-    default:
-      return state
-   }
+
+
  
-  }
-
-  export const deleteTodolistAC = (id: string) => ({
-    type: 'delete_todolist',
-    payload: {id}
-  }as const) //as const делает тип более конкретным, т.е. вместо string мы получаем конкретный строковый тип 'delete_todolist'
-
-  export const createTodolistAC = (title: string) => ({
-    type: 'create_todolist',
-    payload:{title,id: v1()}
-  }as const)
-
-
-  export const changeTodolistTitleAC = ({id,title}:{id:string, title: string}) => ({
-    type: 'change_todolist_title',
-    payload:{id,title}
-  }as const)
-
-  export const changeTodolistFilterAC = ({id,filter}:{id: string, filter: FilterValues}) => ({
-    type: 'change_todolist_filter',
-    payload:{id,filter}
-  }as const)

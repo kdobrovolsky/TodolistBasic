@@ -71,7 +71,7 @@ function App() {
 
   //todolists
   const deleteTodolist = (todolistId: string) => {
-    dispatch(deleteTodolistAC(todolistId));
+    dispatch(deleteTodolistAC({id:todolistId}));
     delete tasks[todolistId];
   };
 
