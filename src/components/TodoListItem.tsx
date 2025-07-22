@@ -1,5 +1,5 @@
 import { ChangeEvent,} from "react";
-import { FilterValues } from "../App";
+import { FilterValues } from "../app/App";
 
 import { CreateItemForm } from "./CreateItemForm";
 import { EditableSpan } from "./EditableSpan";

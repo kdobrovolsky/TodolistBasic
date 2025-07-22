@@ -1,8 +1,8 @@
 import { useReducer, useState } from "react";
 import "./App.css";
-import { Task, TodoListItem } from "./components/TodoListItem";
+import { Task, TodoListItem } from "../components/TodoListItem";
 import { v1 } from "uuid";
-import { CreateItemForm } from "./components/CreateItemForm";
+import { CreateItemForm } from "../components/CreateItemForm";
 import {
   AppBar,
   Container,
@@ -11,9 +11,9 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { NavButton } from "./components/styles/TodolistItem.styles";
-import { changeTodolistFilterAC, changeTodolistTitleAC, createTodolistAC, deleteTodolistAC, todolistsReducer } from "./model/todolists-reducer";
-import { changeTaskStatusAC, changeTaskTitleAC, createTaskAC, deleteTasksAC, tasksReducer } from "./model/tasks-reducer";
+import { NavButton } from "../components/styles/TodolistItem.styles";
+import { changeTodolistFilterAC, changeTodolistTitleAC, createTodolistAC, deleteTodolistAC, todolistsReducer } from "../model/todolists-reducer";
+import { changeTaskStatusAC, changeTaskTitleAC, createTaskAC, deleteTasksAC, tasksReducer } from "../model/tasks-reducer";
 
 export type FilterValues = "all" | "active" | "completed";
 export type TasksState = {
